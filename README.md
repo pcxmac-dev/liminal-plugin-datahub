@@ -1,0 +1,49 @@
+# liminal-plugin-datahub
+
+Datahub's core datasets (datahub.io; github.com/datasets) for
+[Liminal](https://github.com/pcxmac-dev/liminal): free reference data kept as CSV files in public
+GitHub repositories (ODC PDDL), each a mirror of someone else's data:
+
+- the S&P 500's members with their GICS sector and sub-industry (`sp500-constituents`): the market
+  map's sectors;
+- Robert J. Shiller's US stock market data (`shiller-us-market-monthly`): the S&P composite,
+  dividends, earnings, CPI, rates and CAPE, monthly from 1871;
+- the IMF's primary commodity prices (`imf-commodities-monthly`): 53 commodities and 10 indexes,
+  monthly 1980-2017, a frozen mirror (an archive, closed once imported; IMF terms: personal,
+  non-commercial use).
+
+Each repository is a git submodule of the app's repository (`data/github/datasets/`, where the
+app's `LIMINAL_DATA_REPOS` points) whose whole commit history is imported, each commit a published
+version; downloaded from raw.githubusercontent.com where the submodule is not checked out. No key.
+
+A Liminal publisher plugin released on its own. The app finds it through the entry point group
+`liminal.providers` and lists it on the Plugins view and in `python -m liminal plugins`
+as `package: liminal-plugin-datahub`, with this package's version.
+
+## Install
+
+Into the app's environment, from the app's folder:
+
+```powershell
+.venv\Scripts\python.exe -m pip install "liminal-plugin-datahub @ git+https://github.com/pcxmac-dev/liminal-plugin-datahub@v1.1.0"
+```
+
+or with the app's plugins (`pip install -e ".[plugins]"` in liminal). The app loads it on its next
+start.
+
+## Compatibility
+
+It is written for plugin API 1.4 (`PUBLISHER.api`: datasets declared by a publisher). An app
+offering 1.4 or a later 1.x loads it; an app of another major, or one older than 1.4, leaves it out
+and says why on the Plugins view.
+
+## Develop
+
+```powershell
+python -m venv .venv
+.venv\Scripts\python.exe -m pip install "liminal @ git+https://github.com/pcxmac-dev/liminal@feature/collector"
+.venv\Scripts\python.exe -m pip install -e ".[dev]"
+.venv\Scripts\python.exe -m pytest -q
+```
+
+Tests never send requests and never read your keys.
