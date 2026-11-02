@@ -43,7 +43,7 @@ def test_the_app_loads_it_from_this_package_with_its_own_version():
     registry.reload()
     p = publishers().get("datahub")
     assert p is not None, dict(registry.errors())
-    assert p.origin == "package: liminal-plugin-datahub (liminal_plugin_datahub:PUBLISHER)"
+    assert p.origin in {"package: liminal-plugin-datahub (liminal_plugin_datahub:PUBLISHER)", "plugins/liminal-plugin-datahub (liminal_plugin_datahub:PUBLISHER)"}  # its package, or its checkout in the workspace\'s plugin directory
     assert p.version == version("liminal-plugin-datahub") and datahub.PUBLISHER.version == ""
     assert registry.api_refusal(p.api) is None and p.api == "1.4"
     assert not [why for where, why in registry.errors() if "datahub" in where or "datahub" in why]
