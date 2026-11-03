@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import date
 from importlib.metadata import version
 
-from liminal.sources import publishers, registry
+from liminal_lib.sources import publishers, registry
 
 import liminal_plugin_datahub as datahub
 

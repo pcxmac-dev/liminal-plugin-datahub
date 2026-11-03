@@ -23,8 +23,8 @@ import csv
 import io
 from datetime import date
 
-from liminal.sources.dataset import Dataset, Parsed, months_after, ms, num, text
-from liminal.sources.publisher import Policy, Publisher
+from liminal_lib.sources.dataset import Dataset, Parsed, months_after, ms, num, text
+from liminal_lib.sources.publisher import Policy, Publisher
 
 RAW = "https://raw.githubusercontent.com/datasets/"
 
