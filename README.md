@@ -25,7 +25,7 @@ as `package: liminal-plugin-datahub`, with this package's version.
 Into the app's environment, from the app's folder:
 
 ```powershell
-.venv\Scripts\python.exe -m pip install "liminal-plugin-datahub @ git+https://github.com/pcxmac-dev/liminal-plugin-datahub@v1.1.1"
+.venv\Scripts\python.exe -m pip install "liminal-plugin-datahub @ git+https://github.com/pcxmac-dev/liminal-plugin-datahub@v0.2.0"
 ```
 
 or with the app's plugins (`pip install -e ".[plugins]"` in liminal-app). The app loads it on its next
@@ -33,15 +33,16 @@ start.
 
 ## Compatibility
 
-It is written for plugin API 1.4 (`PUBLISHER.api`: datasets declared by a publisher). An app
-offering 1.4 or a later 1.x loads it; an app of another major, or one older than 1.4, leaves it out
-and says why on the Plugins view.
+It is written for plugin API 2.0, the class contract of liminal-lib 1.3.0 (`PUBLISHER.api`; the
+publisher is `Datahub`, a `PublisherPlugin` subclass declaring its datasets, `PUBLISHER` its
+instance). An app offering 2.0 or a later 2.x loads it; an app of another major leaves it out and
+says why on the Plugins view.
 
 ## Develop
 
 ```powershell
 python -m venv .venv
-.venv\Scripts\python.exe -m pip install "liminal-lib @ git+https://github.com/pcxmac-dev/liminal-lib@main"
+.venv\Scripts\python.exe -m pip install "liminal-lib @ git+https://github.com/pcxmac-dev/liminal-lib@release/0.2.0"
 .venv\Scripts\python.exe -m pip install -e ".[dev]"
 .venv\Scripts\python.exe -m pytest -q
 ```

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "liminal-plugin-datahub"
-version = "1.1.1"  # the plugin's own release (CHANGELOG.md); the app shows it on the Plugins view
+version = "0.2.0"  # the plugin's own release (CHANGELOG.md); the app shows it on the Plugins view
 description = "Datahub's core datasets for Liminal: the S&P 500's members and sectors, Shiller's market data from 1871 and the IMF's commodity prices, version by version."
 readme = "README.md"
 requires-python = ">=3.10"

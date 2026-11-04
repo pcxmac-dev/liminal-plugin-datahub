@@ -2,7 +2,7 @@
 CSV files in public GitHub repositories (ODC PDDL). Each is a git submodule of the app's repository
 (data/github/datasets/, pinned commits; where the app's LIMINAL_DATA_REPOS points) whose whole commit
 history is imported, each commit a published version; downloaded from raw.githubusercontent.com
-where the submodule is not checked out. Datasets only (Publisher.datasets); each is a mirror of
+where the submodule is not checked out. Datasets only (PublisherPlugin.datasets); each is a mirror of
 someone else's data:
 - the S&P 500's members with their GICS sector and sub-industry (s-and-p-500-companies): the market
   map's sectors for S&P 500 members;
@@ -12,10 +12,11 @@ someone else's data:
   monthly 1980-2017, a mirror frozen since 2017, so an archive (closed once imported). IMF terms:
   personal, non-commercial use.
 
-A Liminal plugin released on its own (liminal.sources.publisher: Publisher), registered under the
-entry point group `liminal.providers` as `datahub`. It relies on plugin API 1.4 (datasets declared
-by a publisher) and nothing of the app outside it (docs/ARCHITECTURE.md in liminal: "Providers are
-plugins"); its version is this distribution's (pyproject.toml), so PUBLISHER.version is left empty.
+A Liminal plugin released on its own: Datahub, a PublisherPlugin subclass (plugin API 2.0, the class
+contract of liminal_lib.sources.publisher), and PUBLISHER its instance, registered under the entry
+point group `liminal.providers` as `datahub`. It relies on the contract (datasets declared by a
+publisher) and nothing of the app outside it (docs/ARCHITECTURE.md in liminal: "Providers are
+plugins"); its version is this distribution's (pyproject.toml), so Datahub.version is left empty.
 """
 from __future__ import annotations
 
@@ -24,7 +25,7 @@ import io
 from datetime import date
 
 from liminal_lib.sources.dataset import Dataset, Parsed, months_after, ms, num, text
-from liminal_lib.sources.publisher import Policy, Publisher
+from liminal_lib.sources.publisher import Policy, PublisherPlugin
 
 RAW = "https://raw.githubusercontent.com/datasets/"
 
@@ -118,14 +119,26 @@ DATASETS = (
             "mirror", published=months_after(1, 5), git=("datasets/commodity-prices", "data/commodity-prices.csv")),
 )
 
-PUBLISHER = Publisher(
-    api="1.4",  # the contract it needs (datasets declared by it); its version: the distribution's
-    name="datahub", title="Datahub", order=410, kind="mirror",
-    about="core datasets on GitHub: S&P 500 members and sectors, Shiller's market data from 1871, "
-          "IMF commodity prices (datasets)",
-    feeds=(), datasets=DATASETS,
-    policy=Policy(hosts=("github.com", "raw.githubusercontent.com"), min_minutes=60, per_day=40,
-                  terms="ODC Public Domain Dedication and License (PDDL); each dataset's own source's "
-                        "terms besides (the IMF's: personal, non-commercial use)",
-                  terms_url="https://datahub.io/docs/core-data"),
-)
+
+class Datahub(PublisherPlugin):
+    """Datahub's core datasets as a publisher: someone else's data republished (kind mirror) with no
+    feeds, its three datasets fetched from GitHub alone, inside its scrape checks. What it declares
+    are class attributes; it has no hook of its own (no release moments, no calendar, no read of its
+    own: the contract's defaults)."""
+
+    api = "2.0"  # the contract it needs (the class contract); its version: the distribution's
+    name = "datahub"
+    title = "Datahub"
+    order = 410
+    kind = "mirror"
+    about = ("core datasets on GitHub: S&P 500 members and sectors, Shiller's market data from 1871, "
+             "IMF commodity prices (datasets)")
+    feeds = ()
+    datasets = DATASETS
+    policy = Policy(hosts=("github.com", "raw.githubusercontent.com"), min_minutes=60, per_day=40,
+                    terms="ODC Public Domain Dedication and License (PDDL); each dataset's own source's "
+                          "terms besides (the IMF's: personal, non-commercial use)",
+                    terms_url="https://datahub.io/docs/core-data")
+
+
+PUBLISHER = Datahub()
