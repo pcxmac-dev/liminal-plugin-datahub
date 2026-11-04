@@ -13,7 +13,7 @@ someone else's data:
   personal, non-commercial use.
 
 A Liminal plugin released on its own: Datahub, a PublisherPlugin subclass (plugin API 2.0, the class
-contract of liminal_lib.sources.publisher), and PUBLISHER its instance, registered under the entry
+contract of liminal_libs.sources.publisher), and PUBLISHER its instance, registered under the entry
 point group `liminal.providers` as `datahub`. It relies on the contract (datasets declared by a
 publisher) and nothing of the app outside it (docs/ARCHITECTURE.md in liminal: "Providers are
 plugins"); its version is this distribution's (pyproject.toml), so Datahub.version is left empty.
@@ -24,8 +24,8 @@ import csv
 import io
 from datetime import date
 
-from liminal_lib.sources.dataset import Dataset, Parsed, months_after, ms, num, text
-from liminal_lib.sources.publisher import Policy, PublisherPlugin
+from liminal_libs.sources.dataset import Dataset, Parsed, months_after, ms, num, text
+from liminal_libs.sources.publisher import Policy, PublisherPlugin
 
 RAW = "https://raw.githubusercontent.com/datasets/"
 
